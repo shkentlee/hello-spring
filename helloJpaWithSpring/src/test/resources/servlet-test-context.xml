@@ -25,7 +25,7 @@
   	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
-		<property name="packagesToScan" value="com.kent.helloOrm.model" />
+		<property name="packagesToScan" value="com.kent.hellojpawithspring.model" />
 		<!-- Set JPA properties -->
 		<property name="jpaProperties">
 			<props>
@@ -55,5 +55,5 @@
   	<!-- <tx:annotation-driven/> -->
   	<!-- <mvc:annotation-driven/> -->
   
-	<jpa:repositories base-package="com.kent.helloOrm.repository"/>
+	<jpa:repositories base-package="com.kent.hellojpawithspring.repository"/>
 </beans>
