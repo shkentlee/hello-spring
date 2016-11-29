@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:mvc="http://www.springframework.org/schema/mvc"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jpa="http://www.springframework.org/schema/data/jpa"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
-		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd		
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns="http://www.springframework.org/schema/beans"
+	   	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   	xmlns:tx="http://www.springframework.org/schema/tx"
+	   	xmlns:repository="http://www.springframework.org/schema/data/repository"
+		xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+			http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+			http://www.springframework.org/schema/data/repository http://www.springframework.org/schema/data/repository/spring-repository.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 	
 	<!-- <context:component-scan base-package="com.kent.helloJpa"/> -->
 
 	<jdbc:embedded-database id="dataSource" type="H2">
+		<!--<jdbc:script location="classpath:db/sql/create-db.sql" />
+		<jdbc:script location="classpath:db/sql/insert-data.sql" />-->
 	</jdbc:embedded-database>
 	
 	<!--<bean id="dataSource" class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
@@ -30,7 +36,12 @@
   	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
-		<property name="packagesToScan" value="com.kent.hellojpawithspring.model" />
+		<!--<property name="packagesToScan" value="com.kent.hellojpawithspring.model" />-->
+		<property name="packagesToScan">
+			<array>
+				<value>com.kent.hellojpawithspring.model</value>
+			</array>
+		</property>
 		<!-- Set JPA properties -->
 		<property name="jpaProperties">
 			<props>
@@ -58,8 +69,15 @@
 	</bean>
 	
 	<!-- Enable annotation driven transaction management -->
-  	<!-- <tx:annotation-driven/> -->
+	<!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
   	<!-- <mvc:annotation-driven/> -->
   
-	<jpa:repositories base-package="com.kent.hellojpawithspring.repository"/>
+	<jpa:repositories base-package="com.kent.hellojpawithspring.repository">
+		<repository:include-filter type="assignable" expression="com.kent.hellojpawithspring.repository.IssueRepository"/>
+		<repository:include-filter type="assignable" expression="com.kent.hellojpawithspring.repository.StudentRepository"/>
+	</jpa:repositories>
+
+
+	<bean id="issueService" class="com.kent.hellojpawithspring.service.IssueService"/>
+	<bean id="studentService" class="com.kent.hellojpawithspring.service.StudentService"/>
 </beans>

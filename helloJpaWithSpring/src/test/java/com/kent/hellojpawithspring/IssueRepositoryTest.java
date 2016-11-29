@@ -13,8 +13,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.kent.hellojpawithspring.model.Issue;
 import com.kent.hellojpawithspring.repository.IssueRepository;
 
+import javax.transaction.TransactionManager;
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:servlet-test-context.xml")
+@ContextConfiguration("classpath:issue-test-context.xml")
 public class IssueRepositoryTest {
 	private static final Logger logger =LoggerFactory.getLogger(IssueRepositoryTest.class);
 
